@@ -12,7 +12,7 @@ namespace EmployeeManagementSystem.Models
         public int EmployeeID { get; set; }
 
         [Required(ErrorMessage = "Name should not be blank")]
-        public string Name { get; set; }
+        public string EmployeeName { get; set; }
 
 
         [Required(ErrorMessage = "Employee Code should not be blank")]
@@ -27,7 +27,7 @@ namespace EmployeeManagementSystem.Models
 
         [Required(ErrorMessage = "Phone Number should not be blank")]
         [RegularExpression("^[0-9]{10}$", ErrorMessage = "Phone Number must be a 10-digit number")]
-        public string PhoneNo { get; set; }
+        public string PhoneNumber { get; set; }
 
 
         [Required(ErrorMessage = "Gender should not be blank")]

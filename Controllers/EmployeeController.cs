@@ -51,27 +51,63 @@ namespace EmployeeManagementSystem.Controllers
             List<Employee> employeesDetails = dbBusinessLayer.ViewEmployeesDetails();
             return View(employeesDetails);
         }
+        [HttpGet]
+        public ActionResult Edit(string id)
+        {
+            DBBusinessLayer dbBusinessLayer = new DBBusinessLayer();
+            Employee employee = dbBusinessLayer.GetEmployeeByCode(id); 
+            if (employee == null)
+            {
+                return HttpNotFound();
+            }
+            return View(employee);
+        }
+        [HttpPost]
+        public ActionResult Edit(Employee updatedEmployee)
+        {
+            if (ModelState.IsValid)
+            {
+                DBBusinessLayer dbBusinessLayer = new DBBusinessLayer();
+                bool success = dbBusinessLayer.UpdateEmployee(updatedEmployee); 
 
-        // Add a new action method for searching employees by code
-        //[HttpPost]
-        //public ActionResult EmployeeDetails(string employeeCode)
-        //{
-        //    // Check if employeeCode is null or empty
-        //    if (string.IsNullOrEmpty(employeeCode))
-        //    {
-        //        // Retrieve all employees
-        //        DBBusinessLayer dbBusinessLayer = new DBBusinessLayer();
-        //        List<Employee> employeesDetails = dbBusinessLayer.ViewEmployeesDetails();
-        //        return View(employeesDetails);
-        //    }
-        //    else
-        //    {
-        //        // Retrieve employees based on the provided code
-        //        DBBusinessLayer dbBusinessLayer = new DBBusinessLayer();
-        //        List<Employee> employeesDetails = dbBusinessLayer.SearchEmployeesByCode(employeeCode);
-        //        return View(employeesDetails);
-        //    }
-        //}
+                if (success)
+                {
+                    return RedirectToAction("EmployeeDetails");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Error updating employee.");
+                }
+            }
+            return View(updatedEmployee);
+        }
+        [HttpGet]
+        public ActionResult Delete(string id)
+        {
+            DBBusinessLayer dbBusinessLayer = new DBBusinessLayer();
+            Employee employee = dbBusinessLayer.GetEmployeeByCode(id); 
+            {
+                return HttpNotFound();
+            }
+            return View(employee);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(string id)
+        {
+            DBBusinessLayer dbBusinessLayer = new DBBusinessLayer();
+            bool success = dbBusinessLayer.DeleteEmployee(id); 
+
+            if (success)
+            {
+                return RedirectToAction("EmployeeDetails");
+            }
+            else
+            {
+                TempData["Message"] = "Error deleting employee.";
+                return RedirectToAction("EmployeeDetails");
+            }
+        }
 
         #region search using Linq
         //[HttpPost]
@@ -117,6 +153,7 @@ namespace EmployeeManagementSystem.Controllers
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return View("Error");
             }
         }

@@ -33,16 +33,22 @@
         <div class="grid-cell">Email ID</div>
         <div class="grid-cell">Phone Number</div>
         <div class="grid-cell">Gender</div>
+        
     </div>
     <div class="grid-body">
         @foreach (var employee in Model)
         {
             <div class="grid-row">
                 <div class="grid-cell">@employee.EmployeeCode</div>
-                <div class="grid-cell">@employee.Name</div>
+                <div class="grid-cell">@employee.EmployeeName</div>
                 <div class="grid-cell">@employee.EmailId</div>
-                <div class="grid-cell">@employee.PhoneNo</div>
+                <div class="grid-cell">@employee.PhoneNumber</div>
                 <div class="grid-cell">@employee.Gender</div>
+                <div class="grid-cell">
+                    @Html.ActionLink("Edit", "Edit", new { id = employee.EmployeeCode }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = employee.EmployeeCode })
+                </div>
+
             </div>
         }
     </div>
